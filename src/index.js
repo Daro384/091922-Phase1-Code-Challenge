@@ -11,10 +11,39 @@ const addingCuties = cuteObject => {
 
 
 const showCutieCenter = cutieObject => {
-    document.getElementById("name").textContent = cutieObject.name
-    document.getElementById("image").src = cutieObject.image
-    document.getElementById("image").alt = cutieObject.name
-    document.getElementById("vote-count").textContent = cutieObject.votes
+    const id = cutieObject.id
+    fetch(`${api}/${id}`).then(res => res.json())
+    .then(cuteObject => {
+        document.getElementById("name").textContent = cuteObject.name
+        document.getElementById("image").src = cuteObject.image
+        document.getElementById("image").alt = cuteObject.name
+        document.getElementById("image").value = cuteObject.id //used to easly identify object
+        document.getElementById("vote-count").textContent = cuteObject.votes
+    })
+}
+
+
+const votesPatch = (votes, id) => {
+    patchData = {
+        method: "PATCH",
+        headers: {
+            "content-type":"application/json",
+        },
+        body: JSON.stringify({votes:votes})
+    }
+    return fetch(`${api}/${id}`, patchData)
+}
+
+
+const cutiePost = (cutieObject) => {
+    const postData = {
+        method: "POST",
+        headers: {
+            "content-type":"application/json"
+        },
+        body: JSON.stringify(cutieObject)
+    }
+    return fetch(api, postData)
 }
 
 
@@ -24,12 +53,19 @@ const voting = () => {
         event.preventDefault()
         let currentVotes = parseInt(document.getElementById("vote-count").textContent)
         currentVotes += parseInt(event.target.votes.value)
-        document.getElementById("vote-count").textContent = currentVotes
+        const id = document.getElementById("image").value
+        console.log(id)
+        votesPatch(currentVotes, id).then(
+            document.getElementById("vote-count").textContent = currentVotes
+        )
     })
 
     const resetVotesButton = document.getElementById("reset-btn")
     resetVotesButton.addEventListener("click", e => {
-        document.getElementById("vote-count").textContent = 0
+        const id = document.getElementById("image").value
+        votesPatch(0, id).then(
+            document.getElementById("vote-count").textContent = 0
+        )
     })
 }
 
@@ -43,8 +79,12 @@ const addNewCutie = () => {
             image:event.target["image-url"].value,
             votes:0,
         }
-        addingCuties(newCutieObject)
-        showCutieCenter(newCutieObject)
+        console.log(newCutieObject)
+        cutiePost(newCutieObject)
+        .then(what => {
+            addingCuties(newCutieObject)
+            showCutieCenter(newCutieObject)
+        })
     })
 
 }
