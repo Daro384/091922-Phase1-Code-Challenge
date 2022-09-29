@@ -79,11 +79,11 @@ const addNewCutie = () => {
             image:event.target["image-url"].value,
             votes:0,
         }
-        console.log(newCutieObject)
         cutiePost(newCutieObject)
-        .then(what => {
-            addingCuties(newCutieObject)
-            showCutieCenter(newCutieObject)
+        .then(res => res.json())
+        .then(addedCutieObject => {  
+            addingCuties(addedCutieObject)
+            showCutieCenter(addedCutieObject)
         })
     })
 

@@ -16,7 +16,7 @@
       "id": 3,
       "name": "Ms. Zebra",
       "image": "https://media2.giphy.com/media/20G9uNqE3K4dRjCppA/source.gif",
-      "votes": 50
+      "votes": 0
     },
     {
       "id": 4,
@@ -29,6 +29,12 @@
       "name": "Mme. Panda",
       "image": "https://media.giphy.com/media/ALalVMOVR8Qw/giphy.gif",
       "votes": 0
+    },
+    {
+      "name": "Dota",
+      "image": "https://cdn.discordapp.com/attachments/692710331008417828/994847541629833296/unknown.png",
+      "votes": 0,
+      "id": 6
     }
   ]
 }
